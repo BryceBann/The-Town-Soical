@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import Login from './components/Login/Reg/Login';
 import Home from './components/Home/Home';
+import Profile from './components/Profile/Profile'
 import { Register } from './components/Login/Reg/Register';
 import { createHttpLink,
   ApolloClient,
@@ -9,7 +10,7 @@ import { createHttpLink,
   ApolloProvider,
 } from '@apollo/client';
 import { setContext } from "@apollo/client/link/context";
-import { BrowserRouter as Router, Switch, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -31,11 +32,7 @@ const client = new ApolloClient({
 });
 
 function App() {
-  // const [currentForm, setCurrentForm] = useState( 'login');
-
-  // const toggleForm = (formName) => {
-  //   setCurrentForm(formName)
-  // }
+ 
   return (
     <ApolloProvider client={client}>
    <Router>
@@ -43,6 +40,7 @@ function App() {
       <Route path='/' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/home' element={<Home />} />
+      {/* <Route path='/profile' element={<Profile />} /> */}
     </Routes>
    </Router>
     </ApolloProvider>

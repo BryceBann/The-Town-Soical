@@ -53,7 +53,7 @@ function NavBar() {
         },
       });
 
-      console.log(data)
+      console.log(data);
 
       setPostText("");
     } catch (err) {
@@ -74,15 +74,17 @@ function NavBar() {
       <Navbar className="sidebar">
         <Nav className="smallScreen">
           <p className="nav-logo">The Townies</p>
-          <img className="logoIcon" src={Logo} alt="logoIcon"/>
+          <img className="logoIcon" src={Logo} alt="logoIcon" />
           <Nav.Item>
-            <NavLink to="/home">
-              <AiFillHome
-                style={{ marginBottom: "3px", marginRight: "3px" }}
-                className="navIcons"
-              />{" "}
-              <span className="navtext">Home</span>
-            </NavLink>
+            <>
+              <NavLink as={Link} to="/home">
+                <AiFillHome
+                  style={{ marginBottom: "2px", marginRight: "3px" }}
+                  className="navIcons"
+                />{" "}
+                <span className="navtext">Home</span>
+              </NavLink>
+            </>
           </Nav.Item>
           <Nav.Item>
             <NavLink>
@@ -112,13 +114,19 @@ function NavBar() {
             </NavLink>
           </Nav.Item>
           <Nav.Item>
-            <NavLink>
-              <CgProfile
-                style={{ marginBottom: "2px", marginRight: "3px" }}
-                className="navIcons"
-              />{" "}
-              <span className="navtext">Profile</span>
-            </NavLink>
+            {Auth.loggedIn() ? (
+              <>
+                <NavLink as={Link} to="/profile">
+                  <CgProfile
+                    style={{ marginBottom: "2px", marginRight: "3px" }}
+                    className="navIcons"
+                  />{" "}
+                  <span className="navtext">Profile</span>
+                </NavLink>
+              </>
+            ) : (
+              <></>
+            )}
           </Nav.Item>
           <Nav.Item>
             <NavLink as={Link} to="/" onClick={Auth.logout} className="logout">
