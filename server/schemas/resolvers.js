@@ -49,6 +49,14 @@ const resolvers = {
 
       return { token, user };
     },
+    deleteUser: async (parent, { userId }, context) => {
+      return User.findOneAndDelete({ _id: userId })
+      .then((postAuthor) =>
+      Post.deleteMany(
+        { postAuthor: userId}
+      )
+      )
+    },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
@@ -145,6 +153,20 @@ const resolvers = {
           return userLike;
         });
     },
+    addFriend: async(parent, { userId }, context) => {
+      return User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { friends: userId }},
+        { new: true },
+      )
+    },
+    deleteFriend: async(parent, { userId }, context) => {
+      return User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $pull: { friends: userId }},
+        { new: true }
+      )
+    }
     },
     };
 
