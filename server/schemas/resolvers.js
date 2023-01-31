@@ -12,8 +12,8 @@ const resolvers = {
         .populate("posted")
         .sort({ createdAt: -1 });
     },
-    posts: async (parents, { username }) => {
-      const params = username ? { username } : {};
+    posts: async (parents, { postAuthor }) => {
+      const params = postAuthor ? { postAuthor } : {};
       return Post.find(params).populate("posts").sort({ createdAt: -1 });
     },
     post: async (parent, { postId }) => {
@@ -49,13 +49,10 @@ const resolvers = {
 
       return { token, user };
     },
-    deleteUser: async (parent, { userId }, context) => {
-      return User.findOneAndDelete({ _id: userId })
-      .then((postAuthor) =>
-      Post.deleteMany(
-        { postAuthor: userId}
-      )
-      )
+    deleteUser: async (parent, { userId }) => {
+      const user = await User.findOne({ _id: userId });
+      await Post.deleteMany({ postAuthor: user.username })
+      return User.findOneAndDelete({ _id: userId})
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
