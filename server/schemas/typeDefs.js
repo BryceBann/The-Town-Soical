@@ -46,7 +46,9 @@ const typeDefs = gql`
     updatePost(postId: ID!, postText: String!): Post
     deletePost(postId: ID!): Post
     addComment(postId: ID!, commentText: String!, commentAuthor: String!): Post
+    deleteComment(postId: ID!, commentId: ID!): Post
     addLike(postId: ID!): User
+    unLike(postId: ID!): User
     addFriend(userId: ID!): User
     deleteFriend(userId: ID!): User
   }
