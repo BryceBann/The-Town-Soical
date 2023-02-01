@@ -12,8 +12,8 @@ const resolvers = {
         .populate("posted")
         .sort({ createdAt: -1 });
     },
-    posts: async (parents, { username }) => {
-      const params = username ? { username } : {};
+    posts: async (parents, { postAuthor }) => {
+      const params = postAuthor ? { postAuthor } : {};
       return Post.find(params).populate("posts").sort({ createdAt: -1 });
     },
     post: async (parent, { postId }) => {
@@ -49,13 +49,10 @@ const resolvers = {
 
       return { token, user };
     },
-    deleteUser: async (parent, { userId }, context) => {
-      return User.findOneAndDelete({ _id: userId })
-      .then((postAuthor) =>
-      Post.deleteMany(
-        { postAuthor: userId}
-      )
-      )
+    deleteUser: async (parent, { userId }) => {
+      const user = await User.findOne({ _id: userId });
+      await Post.deleteMany({ postAuthor: user.username })
+      return User.findOneAndDelete({ _id: userId})
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
@@ -131,7 +128,28 @@ const resolvers = {
         }
       );
     },
+    deleteComment: async (parent, { commentId, postId }, context) => {
+      const currentUser = await User.findOne({ _id: context.user._id });
+      const post = await Post.findOne({ _id: postId });
+      const commentIndex = post.comments.findIndex((comment) => comment._id.toString() === commentId);
+      if (post.comments[commentIndex].commentAuthor !== currentUser.username) {
+        throw new AuthenticationError("You are not the author of this comment and cannot update it.");
+      }
+      return Post.findOneAndUpdate(
+        { _id: postId },
+        {
+          $inc: { commentCount: -1 },
+          $pull: { comments: { _id: commentId } }
+        }
+      );
+    },
     addLike: async (parent, { postId }, context) => {
+      const currentUser = await User.findOne({ _id: context.user._id });
+
+      // Check if the user has already liked the post
+      if (currentUser.liked.includes(postId)) {
+        return currentUser;
+      }
       return Post.findOneAndUpdate(
         { _id: postId },
         {
@@ -152,6 +170,21 @@ const resolvers = {
         .then((userLike) => {
           return userLike;
         });
+    },
+    unLike: async (parent, { postId }, context) => {
+      const currentUser = await User.findOne({ _id: context.user._id });
+      return User.findOneAndUpdate(
+        { _id: currentUser._id },
+        { $pull: { liked: postId } },
+        { new: true }
+      )
+      .then((user) => {
+        return Post.findOneAndUpdate(
+          { _id: postId },
+          { $inc: { likeCount: -1 } },
+          { new: true }
+        );
+      });
     },
     addFriend: async(parent, { userId }, context) => {
       return User.findByIdAndUpdate(

@@ -32,7 +32,7 @@ const typeDefs = gql`
   type Query {
     users: [User]
     user(username: String!): User
-    posts(username: String): [Post]
+    posts(postAuthor: String): [Post]
     post(postId: ID!): Post
     liked: User
     comments(username: String): [Post]
@@ -46,7 +46,9 @@ const typeDefs = gql`
     updatePost(postId: ID!, postText: String!): Post
     deletePost(postId: ID!): Post
     addComment(postId: ID!, commentText: String!, commentAuthor: String!): Post
+    deleteComment(postId: ID!, commentId: ID!): Post
     addLike(postId: ID!): User
+    unLike(postId: ID!): User
     addFriend(userId: ID!): User
     deleteFriend(userId: ID!): User
   }
