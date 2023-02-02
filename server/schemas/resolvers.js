@@ -173,6 +173,11 @@ const resolvers = {
     },
     unLike: async (parent, { postId }, context) => {
       const currentUser = await User.findOne({ _id: context.user._id });
+
+      if(!currentUser.liked.includes(postId)) {
+        return currentUser;
+      }
+
       return User.findOneAndUpdate(
         { _id: currentUser._id },
         { $pull: { liked: postId } },
@@ -182,7 +187,10 @@ const resolvers = {
         return Post.findOneAndUpdate(
           { _id: postId },
           { $inc: { likeCount: -1 } },
-          { new: true }
+          { 
+            new: true,
+            runValidators: true,
+          }
         );
       });
     },
