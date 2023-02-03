@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { useMutation } from "@apollo/client";
-import { ADD_LIKE } from "../../utils/mutations";
+import { ADD_LIKE, UNLIKE } from "../../utils/mutations";
 import { QUERY_POSTS } from "../../utils/queries";
 import { useQuery } from "@apollo/client";
 
-const LikeList = ({ likes = [], postId }) => {
+const LikeList = ({ postId }) => {
   const [likeCount, setLikeCount] = useState("");
   const [addLike] = useMutation(ADD_LIKE);
-  const [userLikedPost, setUserLikedPost] = useState(false);
-  const [clicked, setClicked] = useState(false);
+  const [unLike] = useMutation(UNLIKE);
+  const [userLikedPost, setUserLikedPost] = useState("");
+  const [userUnlikedPost, setUserUnlikedPost] = useState("");
   const { data, loading, error, refetch } = useQuery(QUERY_POSTS, {
     variables: { id: postId },
   });
@@ -30,21 +31,31 @@ const LikeList = ({ likes = [], postId }) => {
     } catch (err) {
       console.error(err);
     }
+  } else if (userLikedPost === true && !userUnlikedPost) {
+    if (userUnlikedPost) {
+      return;
+    }
+    try {
+      const { data } = await unLike({
+        variables: {
+          postId,
+          likeCount
+        },
+      });
+      setLikeCount("");
+      setUserLikedPost(false);
+      setUserUnlikedPost(true);
+      refetch();
+    } catch (err) {
+      console.error(err);
+    }
   }
 };
 
-  const handleChange = (event) => {
-    const { like } = event.target;
-    console.log(like);
-    if (like) {
-      setLikeCount(like);
-    }
-  }
-
   return (
     <>
-    <FaHeart className="likeBtn" style={{ color: clicked ? 'red' : 'pink' }} 
-    onClick={() => {handleSubmit(); setClicked(!clicked)}} onChange={handleChange}/>
+    <FaHeart className="likeBtn" style={{ color: userLikedPost ? 'red' : 'pink' }} 
+    onClick={() => handleSubmit() }/>
     </>
   );
 };

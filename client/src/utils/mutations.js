@@ -64,6 +64,16 @@ mutation Mutation($postId: ID!) {
   }
 }
 `;
+
+export const UNLIKE = gql`
+mutation UnLike($postId: ID!) {
+  unLike(postId: $postId) {
+    liked {
+      likeCount
+    }
+  }
+}
+`
 export const ADD_COMMENT = gql`
   mutation addcomment(
     $postId: ID!
