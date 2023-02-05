@@ -24,6 +24,14 @@ export const ADD_USER = gql`
   }
 `;
 
+export const DELETE_USER = gql`
+mutation DeleteUser($userId: ID!) {
+  deleteUser(userId: $userId) {
+    _id
+  }
+}
+`
+
 export const ADD_POST = gql`
   mutation addPost($postText: String!, $postAuthor: String!) {
     addPost(postText: $postText, postAuthor: $postAuthor) {
