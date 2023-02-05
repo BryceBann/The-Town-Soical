@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHeart } from "react-icons/fa";
 import { useMutation } from "@apollo/client";
 import { ADD_LIKE, UNLIKE } from "../../utils/mutations";
@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client";
 
 const LikeList = ({ postId }) => {
   const [likeCount, setLikeCount] = useState("");
+  const [liked, setLiked] = useState(false);
   const [addLike] = useMutation(ADD_LIKE);
   const [unLike] = useMutation(UNLIKE);
   const [userLikedPost, setUserLikedPost] = useState("");
@@ -15,7 +16,15 @@ const LikeList = ({ postId }) => {
     variables: { id: postId },
   });
 
-  const handleSubmit = async (event) => {
+  
+  useEffect(() => {
+    const liked = localStorage.getItem(`post-${postId}-liked`);
+    if (liked === 'true') {
+      setUserLikedPost(true);
+    }
+  }, []);
+
+  const handleSubmit = async () => {
     if(!userLikedPost) {
     try {
       const { data } = await addLike({
@@ -27,6 +36,7 @@ const LikeList = ({ postId }) => {
 
       setLikeCount("");
       setUserLikedPost(true);
+      localStorage.setItem(`post-${postId}-liked`, true);
       refetch();
     } catch (err) {
       console.error(err);
@@ -44,6 +54,7 @@ const LikeList = ({ postId }) => {
       });
       setLikeCount("");
       setUserLikedPost(false);
+      localStorage.removeItem(`post-${postId}-liked`);
       setUserUnlikedPost(true);
       refetch();
     } catch (err) {
