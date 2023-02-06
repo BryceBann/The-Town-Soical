@@ -13,3 +13,23 @@
     #4cc9f0 90%
   );
 }
+
+.DeleteUser {
+  top: 0;
+  right: 0;
+  position: absolute;
+  margin-right: 20px;
+  margin-top: 1px;
+  font-size: 30px;
+}
+
+.deleteusers {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+.profiledelete {
+  background-color: white;
+  border-radius: 20px;
+}
