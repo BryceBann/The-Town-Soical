@@ -17,15 +17,65 @@
 .deleteusers {
   font-size: 2rem;
   font-weight: 600;
-  margin-left: 15px;
+ margin: 10px;
 }
 
 .DeleteBtn {
-  margin-left: 25%;
+  float: right;
+  margin-top: 8px;
+  margin-right: 10px;
   font-size: 2rem;
 }
 
 .profiledelete {
   background-color: white;
   border-radius: 20px;
+  width: 25%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 3%;
+  margin-right: 3%;
 }
+
+@media screen and (max-width: 1200px) {
+  .profiledelete {
+    width: 18%;
+    margin-top: 3.5%;
+    margin-right: 2%;
+  }
+  .deleteusers {
+    font-size: 1.2rem;
+  }
+  .DeleteBtn {
+    font-size: 1.2rem;
+    margin-top: 5px;
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 932px) {
+  .profiledelete {
+    position: relative;
+    margin-left: 8% !important;
+    width: 80% !important;
+    padding-bottom: 2%;
+    padding-top: 1%;
+  }
+}
+
+@media  screen and (max-width: 772px) {
+  .profiledelete {
+    width: 30%;
+    margin-top: 3.5%;
+    margin-right: 2%;
+  }
+  .deleteusers {
+    font-size: 1.5rem;
+    margin-left: 10px;
+  }
+  .DeleteBtn {
+    font-size: 1rem;
+  }
+}
+  

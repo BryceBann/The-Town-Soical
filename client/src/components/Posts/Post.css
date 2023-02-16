@@ -1,7 +1,8 @@
 .postCard {
   margin-left: 12% !important;
-  display: table!important;
+  display: grid!important;
   width: 70% !important;
+  height: 10%;
   padding-bottom: 2%;
   padding-top: 1%;
 }
@@ -71,7 +72,7 @@
 @media screen and (max-width: 1200px) {
   .postCard {
     margin-left: 8% !important;
-    width: 90% !important;
+    width: 70% !important;
   }
 }
 
@@ -96,6 +97,8 @@
   }
   .postCard {
     margin-bottom: 15% !important;
+    /* grid-column-start: 1;
+    grid-column-end: 3; */
   }
   .edit {
     margin-right: 10% !important;
