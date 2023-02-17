@@ -50,9 +50,15 @@ const Profile = (refetch) => {
       <div className="Home">
         <NavBar />
         <div className="postCard">
-          <div className="profiledelete">
-            <p className="deleteusers"> Delete Profile <AiFillDelete className="DeleteBtn" onClick={() => setShowModal(true)} /></p>
-            
+          <div className="profiledelete" id="profiledelete">
+            <p className="deleteusers">
+              {" "}
+              Delete Profile{" "}
+              <AiFillDelete
+                className="DeleteBtn"
+                onClick={() => setShowModal(true)}
+              />
+            </p>
           </div>
           <PostsList
             posts={user.posted}
@@ -63,20 +69,20 @@ const Profile = (refetch) => {
           />
         </div>
       </div>
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete Profile</Modal.Title>
-          </Modal.Header>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Profile</Modal.Title>
+        </Modal.Header>
 
-          <Modal.Body>
-            <p>Are you sure you want to delete your profile?</p>
-          </Modal.Body>
+        <Modal.Body>
+          <p>Are you sure you want to delete your profile?</p>
+        </Modal.Body>
 
-          <Modal.Footer>
-            <Button onClick={() => setShowModal(false)} variant="secondary">
-              No
-            </Button>
-            <NavLink as={Link} to="/" onClick={Auth.logout}>
+        <Modal.Footer>
+          <Button onClick={() => setShowModal(false)} variant="secondary">
+            No
+          </Button>
+          <NavLink as={Link} to="/" onClick={Auth.logout}>
             <Button
               onSubmit={Auth.logout}
               onClick={() => handleDelete(user._id)}
@@ -84,10 +90,9 @@ const Profile = (refetch) => {
             >
               Yes
             </Button>
-
-            </NavLink>
-          </Modal.Footer>
-        </Modal>
+          </NavLink>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
