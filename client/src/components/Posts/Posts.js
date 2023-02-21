@@ -9,6 +9,7 @@ import { AiFillDelete } from "react-icons/ai"
 import { FiEdit } from "react-icons/fi"
 import { UPDATE_POST } from "../../utils/mutations";
 import { DELETE_POST } from "../../utils/mutations";
+import AddFriend from "../Friends/AddFriend";
 
 const PostsList = ({ posts, refetch, currentUsername }) => {
   const [showModal, setShowModal] = useState(false);
@@ -68,7 +69,10 @@ const PostsList = ({ posts, refetch, currentUsername }) => {
         {posts &&
           posts.map((post) => (
             <div key={post._id} className="card">
-              <p className="author">{post.postAuthor}</p>
+              {/* <p className="author">{post.postAuthor}</p> */}
+              <span className="author">
+              <AddFriend username={post.postAuthor} />
+              </span>
               <span className="date">{post.createdAt}</span>
               <p style={{ paddingLeft: "4%", paddingTop: "2%" }}>
                 {post.postText}

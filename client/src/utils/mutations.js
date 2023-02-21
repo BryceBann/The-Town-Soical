@@ -24,6 +24,16 @@ export const ADD_USER = gql`
   }
 `;
 
+export const ADD_FRIEND = gql`
+mutation Mutation($userId: ID!) {
+  addFriend(userId: $userId) {
+    friends {
+      _id
+    }
+  }
+}
+`;
+
 export const DELETE_USER = gql`
 mutation DeleteUser($userId: ID!) {
   deleteUser(userId: $userId) {
