@@ -8,29 +8,32 @@ const WeatherCard = () => {
     const [long, setLong] = useState([]);
     const [data, setData] = useState([]);
 
-      useEffect(() => {
-    const fetchData = async () => {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        setLat(position.coords.latitude);
-        setLong(position.coords.longitude);
-      });
-
-      await fetch(`https://api.openweathermap.org/data/2.5/weather/?lat=${lat}&lon=${long}&units=metric&APPID=42bd4df4c8216e16be280cf95790436b`)
-      .then(res => res.json())
-      .then(result => {
-        setData(result)
-        console.log(result);
-      });
-    }
-    fetchData();
-  }, [lat,long])
+    useEffect(() => {
+        const fetchData = async () => {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            const { latitude, longitude } = position.coords;
+            setLat(latitude);
+            setLong(longitude);
+      
+            fetch(`https://api.openweathermap.org/data/2.5/weather/?lat=${latitude}&lon=${longitude}&units=metric&APPID=42bd4df4c8216e16be280cf95790436b`)
+              .then(res => res.json())
+              .then(result => {
+                setData(result)
+                console.log(result);
+              });
+          });
+        }
+      
+        fetchData();
+      }, []);
+      
 
     return (
         <>
-        {data && (
+        {data.name && (
             <Card className="weather">
                 <Card.Body>
-                    <Card.Title>Weather</Card.Title>
+                    <Card.Title>Local Weather</Card.Title>
                     <Card.Text>
                         City: {data.name}
                         <p>Temperature: {data.main.temp}°C</p>
